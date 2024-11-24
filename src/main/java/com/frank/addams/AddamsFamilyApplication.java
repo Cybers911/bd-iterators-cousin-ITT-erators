@@ -8,6 +8,7 @@ import com.frank.types.Person;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.*;
 /********************************************************************************************
@@ -17,11 +18,22 @@ public class AddamsFamilyApplication {
 
         /********************************************************************************************
         *  Keyboard object to get user input
+         *  explain the code
+         *  - Use a Scanner object to get user input from the keyboard
+         *  - Use the Scanner object's nextLine() method to get a line of input from the user'
+         *  - Use the Scanner object's close() method to close the Scanner object'
         ********************************************************************************************/
         private static Scanner userKeyboardDevice = new Scanner(System.in);
 
+
+
         /********************************************************************************************
         * Constants representing menu options
+         * explain this code
+         * - Declare constants for menu options
+         * - Use final keyword to make these constants read-only
+         *
+         *
         ********************************************************************************************/
         private static final String DISPLAY_ALL_ADDAMS_OPTION       = "Display all Addams'";
         private static final String DISPLAY_BY_NAME_OPTION          = "Find an Addams";
@@ -33,6 +45,10 @@ public class AddamsFamilyApplication {
 
         /********************************************************************************************
         * Array of menu options display to users as needed
+         * explain this code
+         *
+         * - Use an array to store menu options for easy modification and retrieval
+         *
         ********************************************************************************************/
         private static final String[] mainMenuOptions = { DISPLAY_ALL_ADDAMS_OPTION
                                                         , DISPLAY_BY_NAME_OPTION
@@ -125,7 +141,7 @@ public class AddamsFamilyApplication {
                 int response = -1;  // initialize response to invalid value to be sure we store what user enters
 
                 System.out.println("\nYou rang??? WattaYaWannaDo? (enter number of option)\n");
-
+                //I CAN NOT use an iterator in a simple array
                 for (int i = 0; i < mainMenuOptions.length; i++) {              // Loop through menu option array
                         System.out.println(i + 1 + ". " + mainMenuOptions[i]);  //     display a menu option
                 }
@@ -153,8 +169,9 @@ public class AddamsFamilyApplication {
                 //       use System.setErr() method
                 //    Also you may assign System.out output to a file using setOut() method
                 System.setErr(fileProcessingErrorLogFile);
+                System.setOut(new PrintStream(new FileOutputStream("fileProcessingOutput.log")));
 
-                System.out.println(Emogis.BLACK_SPIDER_WITH_EIGHT_LEGS.repeat(40));
+                System.out.println(Emogis.ANTICLOCKWISE_DOWNWARDS_AND_UPWARDS_OPEN_CIRCLE_ARROWS.repeat(40));
                 System.out.printf("%1s %s \n", Emogis.BLACK_SPIDER_WITH_EIGHT_LEGS,"Welcome to the Addams Family app!");
                 System.out.println(Emogis.BLACK_SPIDER_WITH_EIGHT_LEGS.repeat(40));
         }
@@ -174,7 +191,12 @@ public class AddamsFamilyApplication {
                 String borderIcon = Emogis.TELEVISION;
 
                 System.out.println("\n"+ (borderIcon + " ").repeat(13)) ;
-                for (Person anAddams : theAddamsFamily) {
+
+                //for (Person anAddams : theAddamsFamily) {// Loop through data structure/
+                Iterator<Person> personIterator = theAddamsFamily.iterator();//Define an iterator for the List
+                        while(personIterator.hasNext()){
+                                Person anAddams = personIterator.next();  // instantiate an object and Get next Person
+                                // value from iterator adding to the object annAddams instantiated value from the iterator
                     personCount++;
                     System.out.printf("%s %2d. %-30s %-8s",borderIcon,personCount,anAddams.getName(),borderIcon);
                     if (personCount != theAddamsFamily.size()) {
@@ -199,7 +221,13 @@ public class AddamsFamilyApplication {
                 System.out.println("\nNumber of Addams' found containing " + whatTheyWant.getSearchValue() + " in name: " + listOfAddams.size());
 
                 // Loop through extracted entries and display them one at a time
-                for(Person anAddams : listOfAddams) {
+                //for(Person anAddams : listOfAddams) { replace it by an iterator
+            Iterator<Person> anIterator = listOfAddams.iterator();
+                while(anIterator.hasNext()){
+                    Person anAddams = anIterator.next();  // instantiate an object and Get next Person
+                    // value from iterator adding to the object annAddams instantiated value from the iterator
+
+            
                     System.out.printf("%10d %-30s\n",anAddams.getId(),anAddams.getName());
                 }
         }
@@ -217,7 +245,13 @@ public class AddamsFamilyApplication {
                 listOfAddams = findAnAddamsByName(whatTheyWant.getSearchValue().strip(),whatTheyWant.isCaseSensitiveSearch());
 
                 // Loop through extracted entries, display each one and ask for new values
-                for(Person anAddams : listOfAddams) {
+                //for(Person anAddams : listOfAddams) { replace by an iterator
+                ListIterator<Person> anIterator = listOfAddams.listIterator();
+                while(anIterator.hasNext()){
+                    Person anAddams = anIterator.next();  // instantiate an object and Get next Person
+                    // value from iterator adding to the object annAddams instantiated value from the iterator
+
+
                         // Show user the current name from extracted entries
                         System.out.println("Found: " + anAddams);
 
@@ -251,7 +285,11 @@ public class AddamsFamilyApplication {
                 aListOfAddams = findAnAddamsByName(whatTheyWant.getSearchValue().strip(), whatTheyWant.isCaseSensitiveSearch());
 
                 // Loop through extracted entries, display each one and ask if user wants to delete it
-                for (Person anAddams : aListOfAddams) {
+               // for (Person anAddams : aListOfAddams) { Replaced by an Iterator to avoid concurrentModificationException
+            ListIterator<Person> anIterator = aListOfAddams.listIterator();
+                while(anIterator.hasNext()){
+                    Person anAddams = anIterator.next();  // instantiate an object and Get next Person
+                    // value from iterator adding to the object annAddams instantiated value from the iterator
                         // Show user the current entry from extracted entries
                         System.out.println("Found: " + anAddams);
 
@@ -261,7 +299,9 @@ public class AddamsFamilyApplication {
 
                         if (deleteResponse.startsWith("Y")) {             // If user wants to delete entry...
                                 if (theAddamsFamily.remove(anAddams)) {   //    remove it from the data structure
-                                    aListOfAddams.remove(anAddams);       //       and from the extracted entries
+                                   // aListOfAddams.remove(anAddams);       //       and from the extracted entries
+                                    //           remove it from the iterator instead of the List removed
+                                    anIterator.remove();
                                     System.out.println("----- Removal of " + anAddams.getName() + " was successful");
                                 } else {                                  // if user does not want to delete entry...
                                     System.out.println("----- Removal of " + anAddams.getName() + " failed");
@@ -378,6 +418,21 @@ public class AddamsFamilyApplication {
          ********************************************************************************************/
         public void displayAllInReverseOrder() {
                 // TODO: Add code to implement this feature
+            // DEFINE A listIterator to start processing at the end of the List
+            //a ListIterator start at the first element however a reverse List {previous) dont have a previous element starting
+            //at the first element thats why we put theAddamsFamily.size()  to start at the last element INSTEAD OF -1
+            //BECAUSE THE list() -1 retrieve the highest valid index in the list and not the last element
+
+            ListIterator<Person> aListIterator = theAddamsFamily.listIterator(theAddamsFamily.size());
+            //Loop while the ListIterTOR HAS A PREVIOUS ENTERY
+            while (aListIterator.hasPrevious()) {
+                Person aPerson = aListIterator.previous();  // RETRIEVE THE PREVIOUS ENTERY
+                // RETRIEVE THE PREVIOUS ENTERY
+                // PROCESS THE PREVIOUS ENTERY
+                System.out.println(aPerson);
+            }
+            //RETRIEVE THE PREVIOUS ENTERY
+            //PROCESS THE PREVIOUS ENTERY
                 System.out.println("\n" + "-".repeat(60) +"\n----- Sorry, this feature has not been implemented yet -----\n"
                                                          + "-".repeat(60) + "\n");
         }
