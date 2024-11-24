@@ -5,7 +5,7 @@ import java.io.FileNotFoundException;
  * Application manager
  ********************************************************************************************/
 public class ApplicationProgram {
-        public static void main(String args[]) throws FileNotFoundException {
+        public static void main(String arg[]) throws FileNotFoundException {
                 // instantiate an instance of the application to be run
                 AddamsFamilyApplication anAddamsFamilyApplication = new AddamsFamilyApplication();
 

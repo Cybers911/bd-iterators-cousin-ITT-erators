@@ -169,7 +169,7 @@ public class AddamsFamilyApplication {
                 //       use System.setErr() method
                 //    Also you may assign System.out output to a file using setOut() method
                 System.setErr(fileProcessingErrorLogFile);
-                System.setOut(new PrintStream(new FileOutputStream("fileProcessingOutput.log")));
+                //System.setOut(new PrintStream(new FileOutputStream("fileProcessingOutput.log")));
 
                 System.out.println(Emogis.ANTICLOCKWISE_DOWNWARDS_AND_UPWARDS_OPEN_CIRCLE_ARROWS.repeat(40));
                 System.out.printf("%1s %s \n", Emogis.BLACK_SPIDER_WITH_EIGHT_LEGS,"Welcome to the Addams Family app!");
